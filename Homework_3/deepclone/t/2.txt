@@ -1,0 +1,22 @@
+ok 1 - simple undef - data schemas eq
+ok 2 - simple undef - data stuctures independ
+ok 3 - simple num - data schemas eq
+ok 4 - simple num - data stuctures independ
+ok 5 - simple string - data schemas eq
+ok 6 - simple string - data stuctures independ
+CYCLIC!CYCLIC!CYCLIC!CYCLIC!ok 7 - nums array - data schemas eq
+ok 8 - nums array - data stuctures independ
+CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!ok 9 - strings array - data schemas eq
+ok 10 - strings array - data stuctures independ
+CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!ok 11 - combined array - data schemas eq
+ok 12 - combined array - data stuctures independ
+ok 13 - simple hash - data schemas eq
+ok 14 - simple hash - data stuctures independ
+ok 15 - array of hashes - data schemas eq
+ok 16 - array of hashes - data stuctures independ
+CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!ok 17 - hash of arrays - data schemas eq
+ok 18 - hash of arrays - data stuctures independ
+CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!ok 19 - complex struct - data schemas eq
+ok 20 - complex struct - data stuctures independ
+CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!CYCLIC!ok 21 - cycle array - data schemas eq
+ok 22 - cycle array - data stuctures independ
