@@ -12,7 +12,7 @@ my %presents = ();
 
 sub calculate {
     #my ($args) = @_;
-    for (0..10) { # 11 попыток на успешное выполнение
+    for (0..10) { # 11 РїРѕРїС‹С‚РѕРє РЅР° СѓСЃРїРµС€РЅРѕРµ РІС‹РїРѕР»РЅРµРЅРёРµ
         fill(\@_);
         #print "CANDIDATES: ";
         #p %candidates;
@@ -26,7 +26,7 @@ sub calculate {
     #print "It seems to be impossible to distribute gifts";
 }
 
-sub fill { # заполняем %partners, @members, %candidates
+sub fill { # Р·Р°РїРѕР»РЅСЏРµРј %partners, @members, %candidates
     my ($args) = @_;
     my @args = @$args;
     for (@args) {
@@ -50,22 +50,22 @@ sub fill { # заполняем %partners, @members, %candidates
     $presents{$_} = 1 for @members;
 }
 
-sub gifts_pairs { #даем на вход список участников @members
+sub gifts_pairs { #РґР°РµРј РЅР° РІС…РѕРґ СЃРїРёСЃРѕРє СѓС‡Р°СЃС‚РЅРёРєРѕРІ @members
     my $count = 0;
 RAND:
     for (@_) {
         my $rand = int (rand keys %candidates);
 
-        my $current_participant = $_; #текущий участник
-        my $candidate = (keys %candidates)[$rand]; #кандидат на подарок от текущего участника
+        my $current_participant = $_; #С‚РµРєСѓС‰РёР№ СѓС‡Р°СЃС‚РЅРёРє
+        my $candidate = (keys %candidates)[$rand]; #РєР°РЅРґРёРґР°С‚ РЅР° РїРѕРґР°СЂРѕРє РѕС‚ С‚РµРєСѓС‰РµРіРѕ СѓС‡Р°СЃС‚РЅРёРєР°
         #print $current_participant, $candidate;
 
         if (
-            ($current_participant eq $candidate) #если текущий участник дарит сам себе
+            ($current_participant eq $candidate) #РµСЃР»Рё С‚РµРєСѓС‰РёР№ СѓС‡Р°СЃС‚РЅРёРє РґР°СЂРёС‚ СЃР°Рј СЃРµР±Рµ
             ||
-            ($partners{$current_participant} eq $candidate) #если текущий участник дарит своему супругу
+            ($partners{$current_participant} eq $candidate) #РµСЃР»Рё С‚РµРєСѓС‰РёР№ СѓС‡Р°СЃС‚РЅРёРє РґР°СЂРёС‚ СЃРІРѕРµРјСѓ СЃСѓРїСЂСѓРіСѓ
             ||
-            ($presents{$candidate} eq $current_participant) #если кандидат уже подарил подарок текущему участнику
+            ($presents{$candidate} eq $current_participant) #РµСЃР»Рё РєР°РЅРґРёРґР°С‚ СѓР¶Рµ РїРѕРґР°СЂРёР» РїРѕРґР°СЂРѕРє С‚РµРєСѓС‰РµРјСѓ СѓС‡Р°СЃС‚РЅРёРєСѓ
         ) {
             #print "NEXT";
             ++$count;
