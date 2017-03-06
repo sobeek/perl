@@ -1,21 +1,15 @@
 #! usr/bin/perl -l
 use DDP;
+use Date::Parse;
 
-%a = (1,2,3,4);
-#keys %a = (7,8);
+$date1 = "03 Mar 2017 18:42:19 +0300";
+$date2 = "03 Mar 2017 18:42:19 +0200";
 
-$a{$_ + 10} = $a{$_} for keys %a;
-
-p %a;
-
-
-__DATA__
-
-my %hash;
-$hash{$_}++ for @a;
-print "$_ -> $hash{$_}" for sort{$a<=>$b} keys %hash;
-
-$a = 1;
-$b = 1;
-
-do {print $a; print $b} if ($a || $b);
+$time1 = str2time($date1);
+$time2 = str2time($date2);
+print $time1, "\n", $time2;
+print $time1 - $time2;
+__DATA__;
+@c = strptime($date);
+print "@c";
+($ss,$mm,$hh,$day,$month,$year,$zone) = strptime($date);
