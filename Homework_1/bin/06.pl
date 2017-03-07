@@ -5,12 +5,12 @@ use warnings;
 
 =encoding UTF8
 =head1 SYNOPSYS
-Шифр Цезаря https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%A6%D0%B5%D0%B7%D0%B0%D1%80%D1%8F
+РЁРёС„СЂ Р¦РµР·Р°СЂСЏ https://ru.wikipedia.org/wiki/%D0%A8%D0%B8%D1%84%D1%80_%D0%A6%D0%B5%D0%B7%D0%B0%D1%80%D1%8F
 =head1 encode ($str, $key)
-Функция шифрования ASCII строки $str ключем $key.
-Пачатает зашифрованную строку $encoded_str в формате "$encoded_str\n"
-Пример:
-encode('#abc', 1) - печатает '$bcd'
+Р¤СѓРЅРєС†РёСЏ С€РёС„СЂРѕРІР°РЅРёСЏ ASCII СЃС‚СЂРѕРєРё $str РєР»СЋС‡РµРј $key.
+РџР°С‡Р°С‚Р°РµС‚ Р·Р°С€РёС„СЂРѕРІР°РЅРЅСѓСЋ СЃС‚СЂРѕРєСѓ $encoded_str РІ С„РѕСЂРјР°С‚Рµ "$encoded_str\n"
+РџСЂРёРјРµСЂ:
+encode('#abc', 1) - РїРµС‡Р°С‚Р°РµС‚ '$bcd'
 =cut
 
 sub encode {
@@ -37,10 +37,10 @@ sub encode {
 #__DATA__
 
 =head1 decode ($encoded_str, $key)
-Функция дешифрования ASCII строки $encoded_str ключем $key.
-Пачатает дешифрованную строку $str в формате "$str\n"
-Пример:
-decode('$bcd', 1) - печатает '#abc'
+Р¤СѓРЅРєС†РёСЏ РґРµС€РёС„СЂРѕРІР°РЅРёСЏ ASCII СЃС‚СЂРѕРєРё $encoded_str РєР»СЋС‡РµРј $key.
+РџР°С‡Р°С‚Р°РµС‚ РґРµС€РёС„СЂРѕРІР°РЅРЅСѓСЋ СЃС‚СЂРѕРєСѓ $str РІ С„РѕСЂРјР°С‚Рµ "$str\n"
+РџСЂРёРјРµСЂ:
+decode('$bcd', 1) - РїРµС‡Р°С‚Р°РµС‚ '#abc'
 =cut
 
 sub decode {

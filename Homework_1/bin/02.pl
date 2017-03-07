@@ -18,10 +18,16 @@ run(1, 4) - печатает "2\n" и "3\n"
 sub is_prime {
     my $num = shift;
     return 0 if $num < 2;
+
+    my $is_prime = 1;
     for (2..sqrt($num)) {
-        $num % $_ == 0 ? return 0 : next;
+        if ($num % $_ == 0) {
+            $is_prime = 0;
+            last
+        }
     }
-    return 1
+
+    return $is_prime
 }
 
 sub run {
