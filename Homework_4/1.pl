@@ -20,25 +20,33 @@ sub set_time {
 }
 
 sub data_by_codes {
-    my ($code, $compressed_bytes, $coeff) = @_;
+    my ($ip, $code, $compressed_bytes, $coeff) = @_;
+    $log{$ip}{compressed_data_by_code}{$code} += $compressed_bytes / 1024;
     if (200 == $code) {
         #my $data = $log{$ip}{data};
-        $coeff = $coeff =~ /^\d+\.?\d*$/ ? $coeff : 1;
-        $log{$ip}{uncompressed_data_200} += $compressed_bytes * $coeff;
+        #$coeff = $coeff =~ /^\d+\.?\d*$/ ? $coeff : 1;
+        my $is_num_coeff = 0+$coeff;
+        print $is_num_coeff;
+        $log{$ip}{uncompressed_data_200} += $compressed_bytes * $is_num_coeff / 1024;
     }
-    $log{$ip}{compressed_data_by_code}{$code} += $compressed_bytes;
+
 }
 
-sub avg_time {
+sub avg_time_old {
     my ($first_time, $last_time, $count) = @_;
 
     my $first_time_unix = str2time($first_time);
     my $last_time_unix = str2time($last_time) || $first_time_unix;
     #print $first_time_unix, "\n", $last_time_unix if $last_time_unix;
-    $_ = ($last_time_unix - $first_time_unix) / (60 * $count);
+    $_ = ($last_time_unix - $first_time_unix) * $count / 60;
     return (/(\d+\.\d{1,2})/) ? $1 : $_;
 
     #$last_time_unix ? return ($last_time_unix - $first_time_unix) / (60 * $count) : 0;
+}
+
+sub avg_time {
+    my ($count, $count_per_second) = @_;
+    return $count / $count_per_second;
 }
 
 sub round {
@@ -53,25 +61,43 @@ while (<F>) {
     chomp;
     ($ip, $time, $request, $code, $compressed_bytes, $referrer, $user_agent, $coeff) =
     /(.*?)\s\[(.*?)\]\s"(.*)"\s(\d+)\s(\d+)\s"(.*?)"\s"(.*?)"\s"(.*?)"/;
-    
-    ++$log{$ip}{count};
-    set_time($ip, $time);
-    data_by_codes ($code, $compressed_bytes, $coeff);
 
-    ++$log{total}{count};
-    $log{total}{first_time} = $time if $. == 1;
-    $log{total}{last_time} = $time if eof;
+    #$log{$current_time} = $time;
+
+    for ('total', $ip) {
+        ++$log{$_}{count};
+        my $ip_ct = $log{$_}->{current_time} || 0;
+        if ($ip_ct ne $time) {
+            $log{$_}{current_time} = $time;
+            ++$log{$_}{count_per_second}
+        }
+        data_by_codes ($_, $code, $compressed_bytes, $coeff);
+    }
+
+    #set_time($ip, $time);
+
+
+    #$log{total}{first_time} = $time if $. == 1;
+    #$log{total}{last_time} = $time if eof;
 }
+
+
+
 
 for (keys %log) {
     my $current_ip = $log{$_};
-    $current_ip->{avg_time} = avg_time ($current_ip->{first_time}, $current_ip->{last_time}, $current_ip->{count});
-    $log{total}{uncompressed_data_200} += $current_ip->{uncompressed_data_200} if exists $current_ip->{uncompressed_data_200};
-    for my $key (keys $current_ip->{compressed_data_by_code}) {
-        $log{total}{compressed_data_by_code}{$key} += $current_ip->{compressed_data_by_code}{$key};
-    }
-
+    #next if $current_ip eq 'total';
+    #$current_ip->{avg_time} = avg_time ($current_ip->{first_time}, $current_ip->{last_time}, $current_ip->{count});
+    $current_ip->{avg_time} = avg_time ($current_ip->{count}, $current_ip->{count_per_second});
+    #$current_ip->{uncompressed_data_200} /= 1024 if exists $current_ip->{uncompressed_data_200};
+    #for my $key (keys $current_ip->{compressed_data_by_code}) {
+    #    $current_ip->{compressed_data_by_code}{$key} /= 1024;# $current_ip->{compressed_data_by_code}{$key};
+    #}
 }
+
+
+#$log{$_}{avg_time} = avg_time ($log{$_}{count}, $log{$_}{count_per_second}) for keys %log;
+
 my @codes = sort {$a <=> $b} keys $log{total}{compressed_data_by_code};
 
 $, = "\t";
@@ -81,6 +107,7 @@ my @sorted = (sort {$log{$b}{count} <=> $log{$a}{count}} keys %log)[0..10];
 for (@sorted) {
     my $current_ip = $log{$_};
     my $codes = join "\t", map {$current_ip->{compressed_data_by_code}{$_} || 0} @codes;
-    print ($_, $current_ip->{count}, $current_ip->{avg_time}, round ($current_ip->{uncompressed_data_200}), $codes );
-    #p $log{$_};
+    #print ($_, $current_ip->{count}, $current_ip->{avg_time}, round ($current_ip->{uncompressed_data_200}), $codes );
+    print $_;
+    p $log{$_};
 }
