@@ -31,17 +31,19 @@ use DDP;
 sub dumper;
 
 my $supported = 1;
+my %vizited_addresses = ();
 
 sub dumper {
     return undef unless $supported;
-    
+
     my $what = shift;
     $what =~ /\(.*\)/ if (defined $what);
     my $what_address = $& || 1;
-    my $what_from = shift || 0;
-
-    if ($what_address eq $what_from) {
+    if (exists $vizited_addresses{$what_address}) {
         return $what;
+    }
+    else {
+        $vizited_addresses{$what_address} = 1
     }
 
     if (my $ref = ref $what) {
@@ -49,7 +51,7 @@ sub dumper {
             when ('ARRAY') {
                 my $array = [];
                 for (@$what) {
-                    my $res = dumper($_, $what_address);
+                    my $res = dumper($_);
                     $supported ? push @$array, $res : return undef;
                 }
                 return $array;
@@ -57,12 +59,9 @@ sub dumper {
             when ('HASH') {
                 my $hash = {};
                 while (my ($k, $v) = each %$what) {
-                    #print $depth;
-                    my $res = dumper($v, $what_address);
+                    my $res = dumper($v);
                     $supported ? $hash->{$k} = $res : return undef;
                 }
-                #p $hash;
-                #<>;
                 return $hash;
             }
             default {
@@ -72,7 +71,6 @@ sub dumper {
         }
     }
     else {
-		#print $what;
         return $what;
     }
 }
@@ -82,7 +80,6 @@ sub clone {
 	my $cloned;
 
 	$cloned = dumper $orig;
-    #p $cloned;
 	return $supported ? $cloned : undef;
 }
 
