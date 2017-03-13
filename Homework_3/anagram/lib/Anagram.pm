@@ -36,17 +36,13 @@ sub anagram {
     for (0..$#words_list) {
         my $current_word = decode('utf8', $words_list[$_]);
         $current_word = lc $current_word;
-        #print '$_:'.$current_word;
         $match = join '', sort split //, $current_word;
-        #print "MATCH: ". $match;
 
         $result{$match}{first_value} = $current_word unless exists $result{$match};
         $result{$match}{$current_word} = $_ unless exists $result{$match}{$current_word}; #позиция первого вхождения слова в словарь
     }
 
-    #p %result;
     for (keys %result) {
-        #$k = 1;
         my $k = $_;
         my $v = $result{$k};
         if (2 == keys %$v) {
@@ -54,7 +50,6 @@ sub anagram {
             next
         }
         my $first_value = $v->{first_value};
-        #print  "FIRST VALUE: $first_value";
         delete $v->{first_value};
         if ($k ne $first_value) {
             $result{$first_value} = $v;
@@ -66,7 +61,6 @@ sub anagram {
         $result{encode('utf8', $_)} = $result{$_};
         delete $result{$_};
     }
-    #p %result;
     return \%result;
 }
 

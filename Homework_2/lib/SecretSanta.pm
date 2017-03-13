@@ -3,12 +3,11 @@ package SecretSanta;
 use 5.010;
 use strict;
 use warnings;
-#use DDP;
 
 sub calculate {
     my $input = \@_;
     for (0..10) { # 11 попыток на успешное выполнение
-    
+
         my $partners = {};
         my $members = [];
         my $candidates = {};
@@ -22,14 +21,11 @@ sub calculate {
             #p @result;
             return @result;
         }
-        #@members = ();
     }
-    #print "It seems to be impossible to distribute gifts";
 }
 
 sub fill { # fill %partners, @members, %candidates
     my ($args, $partners, $members, $candidates, $presents) = @_;
-    #print $partners_hash;
     my @args = @$args;
 
     for (@args) {
@@ -80,9 +76,6 @@ RAND:
             delete $candidates->{$candidate};
             $count = 0;
         }
-        #p %presents;
-        #p %candidates;
-        #<>;
     }
     return 1;
 }

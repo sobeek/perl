@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use DDP;
+#use DDP;
 
 $/ = "\n";
 $, = "\t";
@@ -51,12 +51,10 @@ sub time_formatter {
 
 while (<F>) {
     chomp;
-    my @patt =
-    /(.*?)\s\[(.*?)\]\s"(.*)"\s(\d+)\s(\d+)\s"(.*?)"\s"(.*?)"\s"(.*?)"/;
-    next if 8 != @patt;
+    my @patt = m/(.*?)\s\[(.*?)\]\s"(.*)"\s(\d+)\s(\d+)\s"(.*?)"\s"(.*?)"\s"(.*?)"/;
+    #next if 8 != @patt;
 
     ($ip, $time, $request, $code, $compressed_bytes, $referrer, $user_agent, $coeff) = @patt;
-    #next unless $ip && $time ;
     time_formatter ($time);
 
     for ('total', $ip) {
