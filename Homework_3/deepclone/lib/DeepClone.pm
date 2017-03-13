@@ -3,7 +3,6 @@ package DeepClone;
 use 5.010;
 use strict;
 use warnings;
-use DDP;
 
 =encoding UTF8
 =head1 SYNOPSIS
@@ -28,22 +27,23 @@ use DDP;
 Элементами ссылок на массив или хеш, не могут быть ссылки на массивы и хеши исходной структуры данных.
 =cut
 
+#$, = " ";
+
 sub dumper;
 
-my $supported = 1;
-my %vizited_addresses = ();
+#my $supported = undef;
 
 sub dumper {
-    return undef unless $supported;
-
-    my $what = shift;
-    $what =~ /\(.*\)/ if (defined $what);
-    my $what_address = $& || 1;
-    if (exists $vizited_addresses{$what_address}) {
-        return $what;
+    my ($what, $supported, $vizited_addresses) = @_;
+    return (undef, $supported) unless $supported;
+    #$what =~ /\(.*\)/ if (defined $what);
+    my $what_address = $what ? "$what" : 1;
+    if (exists $vizited_addresses->{$what_address}) {
+        my $what_copy = $what;
+        return ($what_copy, $supported);
     }
     else {
-        $vizited_addresses{$what_address} = 1
+        $vizited_addresses->{$what_address} = 1
     }
 
     if (my $ref = ref $what) {
@@ -51,35 +51,41 @@ sub dumper {
             when ('ARRAY') {
                 my $array = [];
                 for (@$what) {
-                    my $res = dumper($_);
-                    $supported ? push @$array, $res : return undef;
+                    my ($res, $supported) = dumper($_, $supported, $vizited_addresses);
+                    #print $res, $supported;
+                    $supported ? push @$array, $res : return (undef, $supported);
                 }
-                return $array;
+                return ($array, $supported);
             }
             when ('HASH') {
                 my $hash = {};
                 while (my ($k, $v) = each %$what) {
-                    my $res = dumper($v);
-                    $supported ? $hash->{$k} = $res : return undef;
+                    my ($res, $supported) = dumper($v, $supported, $vizited_addresses);
+                    #print $supported;
+                    $supported ? $hash->{$k} = $res : return (undef, $supported);
                 }
-                return $hash;
+                return ($hash, $supported);
             }
             default {
                 $supported = 0;
-                return undef;
+                #print $supported;
+                return (undef, $supported);
             }
         }
     }
     else {
-        return $what;
+        #print $what;
+        return ($what, $supported);
     }
 }
 
 sub clone {
 	my $orig = shift;
 	my $cloned;
+    my $supported = 1;
+    my $vizited_addresses = {};
 
-	$cloned = dumper $orig;
+	($cloned, $supported) = dumper ($orig, $supported, $vizited_addresses);
 	return $supported ? $cloned : undef;
 }
 
