@@ -1,0 +1,6 @@
+#! usr/bin/perl -l
+use strict;
+use warnings;
+use Local::Reducer;
+use Local::Source::Text;
+use Local::Source::Array;

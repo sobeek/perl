@@ -4,8 +4,7 @@ use Date::Parse;
 use strict;
 use warnings;
 
-my @a = 1..4;
-for (@a) {
-    $_ = 1;
-}
-print @a;
+$_ = 4.9;
+#print print print x 4;
+#print x 4
+print sprintf ("%.0f", $_)

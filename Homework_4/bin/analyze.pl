@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-#use DDP;
+use DDP;
 
 $/ = "\n";
 $, = "\t";
@@ -38,11 +38,11 @@ sub avg_time {
     return sprintf ("%.2f", $count / $count_per_minute)
 }
 
-sub codes_formatter {
-    my ($arg, $current_ip) = @_;
-    my $x = $current_ip->{compressed_data_by_code}{$arg} || 0;
-    return sprintf("%.0f", $x);
-}
+#sub codes_formatter {
+#    my ($arg, $current_ip) = @_;
+#    my $x = $current_ip->{compressed_data_by_code}{$arg} || 0;
+#    return sprintf("%.0f", $x);
+#}
 
 sub time_formatter {
     $_[0] =~ s/:\d{2} / /; #cut off seconds
@@ -56,6 +56,11 @@ while (<F>) {
 
     ($ip, $time, $request, $code, $compressed_bytes, $referrer, $user_agent, $coeff) = @patt;
     time_formatter ($time);
+
+    if ('46.29.9.32' eq $ip || $ip eq '51.34.179.202') {
+        #p @patt;
+        #<>;
+    }
 
     for ('total', $ip) {
         ++$log{$_}{count};
