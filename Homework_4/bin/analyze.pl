@@ -15,7 +15,17 @@ $, = "\t";
 my $f = './access.log';
 open F, $f or die "$!";
 my %log = ();
-my ($ip, $time, $request, $code, $compressed_bytes, $referrer, $user_agent, $coeff);
+
+my @patt = qw /
+            ^(.*?)\s
+            \[(.*?)\]\s
+            "(.*?)"\s
+            (\d+)\s
+            (\d+)\s
+            "(.*?)"\s
+            "(.*?)"\s
+            "(\d+(?:\.\d+)*|-)"$
+            /;
 
 sub data_by_codes {
     my ($ip, $code, $compressed_bytes, $coeff) = @_;
@@ -38,29 +48,39 @@ sub avg_time {
     return sprintf ("%.2f", $count / $count_per_minute)
 }
 
-#sub codes_formatter {
-#    my ($arg, $current_ip) = @_;
-#    my $x = $current_ip->{compressed_data_by_code}{$arg} || 0;
-#    return sprintf("%.0f", $x);
-#}
-
 sub time_formatter {
     $_[0] =~ s/:\d{2} / /; #cut off seconds
 }
 
 
 while (<F>) {
+    my @data = ();
+    my $invalid_line = 0;
     chomp;
-    my @patt = m/(.*?)\s\[(.*?)\]\s"(.*)"\s(\d+)\s(\d+)\s"(.*?)"\s"(.*?)"\s"(.*?)"/;
-    #next if 8 != @patt;
 
-    ($ip, $time, $request, $code, $compressed_bytes, $referrer, $user_agent, $coeff) = @patt;
-    time_formatter ($time);
-
-    if ('46.29.9.32' eq $ip || $ip eq '51.34.179.202') {
-        #p @patt;
-        #<>;
+    my $buf = $_;
+    for (@patt) {
+        $buf =~ /$_/;
+        #print $-[0]." ".$+[0];
+        if ($-[0]) {
+            #print $., "@data";
+            #print "INVALID!!";
+            $invalid_line = 1;
+            last
+        }
+        my $x = $1;
+        $x =~ s/\s+$//;
+        push @data, $x;
+        $buf = substr $buf, $+[0];
     }
+
+    if ($invalid_line || $buf) {
+        ++$log{total}{count};
+        next;
+    }
+
+    my ($ip, $time, $request, $code, $compressed_bytes, $referrer, $user_agent, $coeff) = @data;
+    time_formatter ($time);
 
     for ('total', $ip) {
         ++$log{$_}{count};

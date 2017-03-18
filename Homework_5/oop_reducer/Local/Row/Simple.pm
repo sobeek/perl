@@ -12,9 +12,6 @@ sub new {
     return $self;
 }
 
-
-
-
 sub get {
     my ($obj, $name, $default) = @_;
     print $obj;
