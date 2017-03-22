@@ -16,7 +16,7 @@ my $separator = "\t";
 
 #my $input = new IO::File "<access.log.bz2" or die "Cannot open 'access.log.bz2': $!\n";
 my $f = "access.log.bz2";
-my $tmp = undef;
+my $tmp;
 bunzip2 $f => \$tmp;
 #print $tmp;
 my @tmp = split $/, $tmp;
@@ -78,8 +78,8 @@ for (@tmp) {
             $invalid_line = 1;
             last
         }
-        my $x = $1;
-        push @data, $x;
+        #my $x = $1;
+        push @data, $1;
         $buf = substr $buf, $+[0];
     }
 
@@ -102,12 +102,6 @@ for (@tmp) {
 }
 #close $input;
 
-for (keys %log) {
-    my $current_ip = $log{$_};
-    $current_ip->{avg_time} = avg_time ($current_ip->{count}, $current_ip->{count_per_minute});
-    delete $current_ip->{dates};
-}
-
 my @codes = sort {$a <=> $b} keys $log{total}{compressed_data_by_code};
 
 my $header = join $separator, qw/IP count avg data/, @codes;
@@ -116,8 +110,9 @@ my @output = ($header);
 my @top_10 = (sort {$log{$b}{count} <=> $log{$a}{count}} keys %log)[0..10];
 for (@top_10) {
     my $current_ip = $log{$_};
-    my $rounded_data_200 = int ($current_ip->{uncompressed_data_200} / 1024);
-    my $rounded_data_codes = join $separator, map {int(($current_ip->{compressed_data_by_code}{$_} || 0) / 1024) } @codes;
+    $current_ip->{avg_time} = avg_time ($current_ip->{count}, $current_ip->{count_per_minute});
+    my $rounded_data_200 = int (($current_ip->{uncompressed_data_200} // 0) / 1024);
+    my $rounded_data_codes = join $separator, map {int(($current_ip->{compressed_data_by_code}{$_} // 0) / 1024) } @codes;
     my $data_line = join $separator, ($_, $current_ip->{count}, $current_ip->{avg_time}, $rounded_data_200, $rounded_data_codes);
     #print ($_, $current_ip->{count}, $current_ip->{avg_time}, $rounded_data_200, $rounded_data_codes);
     #print $x;
