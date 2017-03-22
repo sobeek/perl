@@ -1,26 +1,36 @@
 #! usr/bin/perl
 use strict;
 use warnings;
+use Local::Source;
 
 package Local::Source::Array;
+#our @ISA = ("Local::Source");
 
-our $i = 0;
+#my $i = 0;
 
 sub new {
     my $invocant = shift;
     my $class = ref($invocant) || $invocant;
-    my $self = { @_ };          # Оставшиеся аргументы становятся атрибутами
+    my $self = { @_, counter => 0 };          # Оставшиеся аргументы становятся атрибутами
     bless($self, $class);       # «Благословление» в объекты
     return $self;
 }
 
 sub next {
     my $obj = shift;
-    print $obj;
+    #print $obj;
     #print $i;
     my $arr = $obj->{array};
-    return Local::Source::get_next ($arr, $i++);
-
+    my $i = $obj->{counter};
+    #my $result = Local::Source::get_next ($arr, $i++);
+    my $result = Local::Source::get_next ($arr, $i);
+    if (defined $result) {
+        $obj->{counter}++;
+        return $result
+    }
+    else {
+        return undef;
+    }
 }
 
 1;

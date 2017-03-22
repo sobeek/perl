@@ -13,12 +13,13 @@ sub get_next {
         return $array->[$i];
     }
     elsif ($i == $len_array) {
-        $i = 0;
-        print "Source is ended";
+        #$i = 0;
+        #print "Source is ended";
         return undef;
     }
     else {
-        print "Smth going wrong...\n"
+        print "Smth going wrong...\n";
+        return undef;
     }
 }
 

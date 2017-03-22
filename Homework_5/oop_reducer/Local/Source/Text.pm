@@ -4,25 +4,31 @@ use warnings;
 use Local::Source;
 
 package Local::Source::Text;
-
-our $i = 0;
+#our @ISA = ("Local::Source");
+#our $i = 0;
 
 sub new {
     my $invocant = shift;
     my $class = ref($invocant) || $invocant;
-    my $self = { @_ };          # Оставшиеся аргументы становятся атрибутами
+    my $self = { @_, counter => 0 };          # Оставшиеся аргументы становятся атрибутами
     bless($self, $class);       # «Благословление» в объекты
     return $self;
 }
 
 sub next {
     my $obj = shift;
-    #print $obj;
     my $text = $obj->{text};
     my $delimiter = $obj->{delimiter};
     my $splitted = text_to_array ($text, $delimiter);
-    #print $i;
-    return Local::Source::get_next($splitted, $i++);
+    my $i = $obj->{counter};
+    my $result = Local::Source::get_next ($splitted, $i);
+    if (defined $result) {
+        $obj->{counter}++;
+        return $result
+    }
+    else {
+        return undef
+    }
 }
 
 sub text_to_array {

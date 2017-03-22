@@ -4,8 +4,9 @@ use warnings;
 
 package Bar;
 
-use Foo ;
+use Foo qw/ZERO/;
+#use Exporter;
 
-print ONE;             # 0
+print "ZERO: ".ZERO;             # 0
 #print PI;               # 3.14
 1;

@@ -16,7 +16,7 @@ sub new {
 
 sub next {
     my $obj = shift;
-    print $obj;
+    #print $obj;
     #print $i;
     my $fh = $obj->{filehandle};
     return Local::Source::get_next_from_file ($fh);

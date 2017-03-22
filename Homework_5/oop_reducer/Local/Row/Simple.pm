@@ -14,10 +14,10 @@ sub new {
 
 sub get {
     my ($obj, $name, $default) = @_;
-    print $obj;
+    #print $obj;
     return undef unless $obj->{str};
     my %splitted = split /[:,]/, $obj->{str};
-    print "\%SPLITTED: ", %splitted;
+    #print "\%SPLITTED: ", %splitted;
     return $splitted{$name} || $default;
 }
 

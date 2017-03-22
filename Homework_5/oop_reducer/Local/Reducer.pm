@@ -4,6 +4,7 @@ use warnings;
 
 package Local::Reducer;
 
+=head
 sub new {
     my $invocant = shift;
     my $class = ref($invocant) || $invocant;
@@ -11,11 +12,21 @@ sub new {
     bless($self, $class);       # «Благословление» в объекты
     return $self;
 }
+=cut
 
-sub get_name {
+sub reduce_n {
+    my ($obj, $n) = @_;
+    return $obj->reducer ($n);
+}
+
+sub reduce_all {
+    my ($obj, $n) = @_;
+    return $obj->reducer (-1);
+}
+
+sub reduced {
     my $obj = shift;
-    print $obj;
-    return $obj->{name};
+    return $obj->{initial_value};
 }
 
 1;

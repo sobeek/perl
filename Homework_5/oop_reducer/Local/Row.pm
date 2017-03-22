@@ -4,6 +4,7 @@ use warnings;
 
 package Local::Row;
 
+=head
 sub new {
     my $invocant = shift;
     my $class = ref($invocant) || $invocant;
@@ -13,3 +14,4 @@ sub new {
 }
 
 1;
+=cut

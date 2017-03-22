@@ -1,19 +1,27 @@
-#! usr/bin/env/perl -l
+#! usr/bin/env/perl
 
 use strict;
 use warnings;
-use DDP;
+#use DDP;
+use IO::Uncompress::Bunzip2 qw(bunzip2 $Bunzip2Error);
 
 $/ = "\n";
-$, = "\t";
+#$, = "\t";
+my $separator = "\t";
 
 #system("$^X bin/analyze.pl access.log.bz2 >output.tmp 2>stderr.tmp");
 #my $f = 'output.tmp';
 #open(my $f, '<', 'output.tmp');
 #$output_fh->close();
 
-my $f = './access.log';
-open F, $f or die "$!";
+#my $input = new IO::File "<access.log.bz2" or die "Cannot open 'access.log.bz2': $!\n";
+my $f = "access.log.bz2";
+my $tmp = undef;
+bunzip2 $f => \$tmp;
+#print $tmp;
+my @tmp = split $/, $tmp;
+#my $f = './access.log';
+#open F, $f or die "$!";
 my %log = ();
 
 my @patt = qw /
@@ -53,7 +61,9 @@ sub time_formatter {
 }
 
 
-while (<F>) {
+#while ($input->getline()) {
+for (@tmp) {
+    #print;
     my @data = ();
     my $invalid_line = 0;
     chomp;
@@ -69,7 +79,6 @@ while (<F>) {
             last
         }
         my $x = $1;
-        $x =~ s/\s+$//;
         push @data, $x;
         $buf = substr $buf, $+[0];
     }
@@ -91,6 +100,7 @@ while (<F>) {
         data_by_codes ($_, $code, $compressed_bytes, $coeff);
     }
 }
+#close $input;
 
 for (keys %log) {
     my $current_ip = $log{$_};
@@ -100,18 +110,24 @@ for (keys %log) {
 
 my @codes = sort {$a <=> $b} keys $log{total}{compressed_data_by_code};
 
-my $header = join $,, qw/IP count avg data/, @codes;
-print $header;
+my $header = join $separator, qw/IP count avg data/, @codes;
+my @output = ($header);
 
 my @top_10 = (sort {$log{$b}{count} <=> $log{$a}{count}} keys %log)[0..10];
 for (@top_10) {
     my $current_ip = $log{$_};
     my $rounded_data_200 = int ($current_ip->{uncompressed_data_200} / 1024);
-    my $rounded_data_codes = join $,, map {int(($current_ip->{compressed_data_by_code}{$_} || 0) / 1024) } @codes;
-    print ($_, $current_ip->{count}, $current_ip->{avg_time}, $rounded_data_200, $rounded_data_codes);
+    my $rounded_data_codes = join $separator, map {int(($current_ip->{compressed_data_by_code}{$_} || 0) / 1024) } @codes;
+    my $data_line = join $separator, ($_, $current_ip->{count}, $current_ip->{avg_time}, $rounded_data_200, $rounded_data_codes);
+    #print ($_, $current_ip->{count}, $current_ip->{avg_time}, $rounded_data_200, $rounded_data_codes);
+    #print $x;
+    push @output, $data_line;
     #print $_;
     #p $log{$_};
     #<>;
 }
 
-close F;
+push @output, "";
+
+print join $/, @output;
+#print "\n"
