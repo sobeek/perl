@@ -18,8 +18,6 @@ sub new {
 
 sub next {
     my $obj = shift;
-    #print $obj;
-    #print $i;
     my $arr = $obj->{array};
     my $i = $obj->{counter};
     #my $result = Local::Source::get_next ($arr, $i++);

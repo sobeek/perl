@@ -3,6 +3,8 @@ use warnings;
 
 use Test::More tests => 6;
 
+push @INC, './t';
+
 use Local::Reducer;
 use Local::Reducer::MaxDiff;
 use Local::Source::Text;

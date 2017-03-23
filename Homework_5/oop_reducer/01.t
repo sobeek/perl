@@ -3,6 +3,8 @@ use warnings;
 
 use Test::More tests => 4;
 
+push @INC, '..';
+
 use Local::Reducer;
 use Local::Reducer::Sum;
 use Local::Source::Array;

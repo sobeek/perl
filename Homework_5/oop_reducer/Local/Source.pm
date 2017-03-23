@@ -18,7 +18,7 @@ sub get_next {
         return undef;
     }
     else {
-        print "Smth going wrong...\n";
+        #warn "Smth going wrong...\n";
         return undef;
     }
 }
