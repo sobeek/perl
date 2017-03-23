@@ -21,6 +21,7 @@ my $x;
 
 
 my $source_array = Local::Source::Array->new(array => [
+        'a',
         '{"price": 4}',
         '{"price": 5}',
         '{"price": 6}',
@@ -38,6 +39,8 @@ my $source_text = Local::Source::Text->new(text =>
 my $reducer = Local::Reducer::Sum->new(
     field => 'price',
     source => Local::Source::Array->new(array => [
+        '{"price": a}',
+        'a',
         '{"price": 1}',
         '{"price": 2}',
         '{"price": 3}',
@@ -46,23 +49,49 @@ my $reducer = Local::Reducer::Sum->new(
     initial_value => 0,
 );
 
-print "REDUCED(1): ".$reducer->reduce_n(1);
-print "REDUCED(1): ".$reducer->reduce_n(1);
-print "REDUCED ALREADY: ".$reducer->reduced();
-print $reducer->reduce_all;
+
+$reducer = Local::Reducer::Sum->new(
+    field => 'price',
+    source => Local::Source::Array->new(array => [
+        'not-a-json',
+        '{"price": 0}',
+        '{"price": 1}',
+        '{"price": 2}',
+        '[ "invalid json structure" ]',
+        '{"price":"low"}',
+        '{"price": 3}',
+    ]),
+    row_class => 'Local::Row::JSON',
+    initial_value => 0,
+);
+
+#print "REDUCED(1): ".
+$reducer->reduce_n(3);
+#print "REDUCED(2): ".
+$reducer->reduce_n(1);
+#print "REDUCED ALREADY: ".
+$reducer->reduced();
+#print
+$reducer->reduce_all;
 
 $reducer = Local::Reducer::MaxDiff->new(
     top => 'received',
     bottom => 'sended',
-    source => Local::Source::Text->new(text =>"sended:1024,received:2048\nsended:2048,received:10240"),
+    source => Local::Source::Text->new(text =>"sended:1024,received:2048\nsended:0,received:0\ninvalid\nsended:2048,received:10240\n\nsended:2048,received:4096\nsended:foo,received:bar\n\n"),
     row_class => 'Local::Row::Simple',
     initial_value => 0,
 );
 
-print "REDUCED(1): ".$reducer->reduce_n(1);
-print "REDUCED(1): ".$reducer->reduce_n(1);
-print "REDUCED ALREADY: ".$reducer->reduced();
-print $reducer->reduce_all;
+#print "REDUCED(1): ".
+$reducer->reduce_n(1);
+#print "REDUCED(1): ".
+$reducer->reduce_n(2);
+print "REDUCED ALREADY: ".
+$reducer->reduced();
+#print
+$reducer->reduce_all;
+print "REDUCED ALREADY: ".
+$reducer->reduced();
 #$reducer->reduce_all();
 #print $x while $x = $source_text->next();
 

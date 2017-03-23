@@ -16,9 +16,11 @@ sub new {
 }
 
 sub next {
+    #warn "NEXT IN TEXT...";
     my $obj = shift;
     my $text = $obj->{text};
-    my $delimiter = $obj->{delimiter};
+    my $delimiter = $obj->{delimiter} // "\n";
+    #print $delimiter;
     my $splitted = text_to_array ($text, $delimiter);
     my $i = $obj->{counter};
     my $result = Local::Source::get_next ($splitted, $i);
@@ -32,8 +34,8 @@ sub next {
 }
 
 sub text_to_array {
-    my $text = shift;
-    my $delimiter = shift || "\n";
+    my ($text, $delimiter) = @_;
+    #my $delimiter = shift || "\n";
     #print $delimiter;
     return [split $delimiter, $text];
 }

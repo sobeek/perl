@@ -4,7 +4,7 @@ $str = q{46.29.9.32 [03/Mar/2017:18:31:56 +0300] "GET /music HTTP/1.1" 200 85363
 
 $str2 = q{195.178.193.216 [03/Mar/2017:18:28:38 +0300] "GET /music/songs/817140dc852240b835117445e0503ac2 HTTP/1.1" 200 64619 "-" "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36" "7.39"};
 
-@patt = qw /^(.*?)\s
+@patt1 = qw /^(.*?)\s
             \[(.*?)\]\s
             "(.*?)"\s
             (\d+)\s
@@ -13,12 +13,38 @@ $str2 = q{195.178.193.216 [03/Mar/2017:18:28:38 +0300] "GET /music/songs/817140d
             "(.*?)"\s
             "(\d+(?:\.\d+)*|-)$"
             /;
+my @patt = qw /
+            ^(.*?)\s
+            \[(?<time>[^\]]*)\]\s
+            "(?<request>[^"]*)"\s
+            (?<code>\d+)\s
+            (?<bytes>\d+)\s
+            "(?<referrer>[^"]*)"\s
+            "(?<user_agent>[^"]*)"\s
+            "(?<coeff>\d+(?:\.\d+)*|-)"$
+            /;
+
+            my $patt = qr /
+                        ^(.*?)\s
+                        \[(?<time>[^\]]*)\]\s
+                        "(?<request>[^"]*)"\s
+                        (?<code>\d+)\s
+                        (?<bytes>\d+)\s
+                        "(?<referrer>[^"]*)"\s
+                        "(?<user_agent>[^"]*)"\s
+                        "(?<coeff>\d+(?:\.\d+)*|-)"$
+                        /x;
+
+print $patt;
+
+print 1 if $str1 =~ $patt;
 #print @patt;
+__DATA__
 for $s ($str, $str2) {
     print "S: $s";
     for $p (@patt) {
         print "-------------------------\n$p";
-        print "MATCHED: "."$1"."..." if $s =~ /($p)/;
+        print "MATCHED: "."$1"."..." if $s =~ /$p/;
         print $+[0]." ".$-[0];
         print "INVALID!!" if $-[0];
         $s = substr $s, $+[0];

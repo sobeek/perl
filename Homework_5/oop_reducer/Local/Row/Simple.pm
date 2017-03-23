@@ -5,10 +5,21 @@ use warnings;
 package Local::Row::Simple;
 
 sub new {
-    my $invocant = shift;
-    my $class = ref($invocant) || $invocant;
-    my $self = { @_ };          # Оставшиеся аргументы становятся атрибутами
-    bless($self, $class);       # «Благословление» в объекты
+    #print "@_";
+    my $self = undef;
+    #print "VALID?";
+    #p $valid;
+    my $x = qr /\w+:\d+(?:\.\d+)*/;
+    if ($_[-1] =~ /^$x(,$x)*$/m) {
+        #warn "MAKING SELF...$_[-1]";
+        my $invocant = shift;
+        my $class = ref($invocant) || $invocant;
+        $self = { @_ };          # Оставшиеся аргументы становятся атрибутами
+        bless($self, $class);       # «Благословление» в объекты
+    }
+    #else {
+    #    warn "BAD... $_[-1]"
+    #}
     return $self;
 }
 
