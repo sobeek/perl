@@ -4,9 +4,6 @@ use warnings;
 use Local::Source;
 
 package Local::Source::Array;
-#our @ISA = ("Local::Source");
-
-#my $i = 0;
 
 sub new {
     my $invocant = shift;

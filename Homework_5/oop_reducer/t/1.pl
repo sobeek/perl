@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Local::Reducer;
+#use Local::Reducer;
 use Local::Reducer::Sum;
 use Local::Reducer::MaxDiff;
 

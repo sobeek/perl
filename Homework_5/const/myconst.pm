@@ -6,7 +6,7 @@ use warnings;
 #use diagnostics;
 require Exporter;
 our @ISA = ("Exporter");
-#our @ISA = qw/Exporter/;
+
 $\ = "\n";
 $" = " ";
 our %EXPORT_TAGS;
@@ -17,7 +17,7 @@ sub import {
     #my $pkg = undef;
 
     my $pkg = caller;
-    warn "CALLER: ". $pkg;
+    #warn "CALLER: ". $pkg;
     #my $pkg = 'Bar';
     shift;
     return unless @_;
@@ -30,12 +30,12 @@ sub import {
                 my $group = $_;
                 #print;
                 $EXPORT_TAGS{$group} = [keys $args{$group}];
-                ${"${pkg}::EXPORT_TAGS"}{$group} = [keys $args{$group}];
+                #${"${pkg}::EXPORT_TAGS"}{$group} = [keys $args{$group}];
                 for (keys $args{$group}) {
                     #my $full_name = "${pkg}::${group}::$_";
                     #my $full_name = "myconst::$key";
                     #print "FULL NAME: ".$full_name;
-                    push @{"${pkg}::EXPORT_OK"}, $_;
+                    #push @{"${pkg}::EXPORT_OK"}, $_;
                     push @EXPORT_OK, $_;
                     fill_names_table ($pkg, $_, $args{$group});
                 }
@@ -46,19 +46,18 @@ sub import {
             }
         }
         else {
-            push @{"${pkg}::EXPORT_OK"}, $_;
+            #push @{"${pkg}::EXPORT_OK"}, $_;
             push @EXPORT_OK, $_;
             fill_names_table ($pkg, $_, \%args);
         }
     }
 
-    ${"${pkg}::EXPORT_TAGS"}{all} = [@{"${pkg}::EXPORT_OK"}];
+    #${"${pkg}::EXPORT_TAGS"}{all} = [@{"${pkg}::EXPORT_OK"}];
     $EXPORT_TAGS{all} = [@EXPORT_OK];
     #print @EXPORT_OK;
-    warn;
+    #warn;
     #$EXPORT_TAGS{all} = [@EXPORT_OK];
     #print %{"${pkg}::EXPORT_TAGS"};
-
     #print qq/@{"${pkg}::EXPORT_OK"}/;
     #myconst->export_to_level(1, @EXPORT_OK);
 
