@@ -4,11 +4,10 @@ use warnings;
 
 package Bar;
 
-use Foo qw/:all/;
-#use Exporter;
+use Foo qw/:math ZERO/;
 
-warn "Foo: ".Foo::ZERO();
+warn "Foo: ".Foo::PI();
 
-warn "ZERO: ". Foo::ZERO;             # 0
+warn "ZERO: ". ZERO;             # 0
 #print PI;               # 3.14
 1;

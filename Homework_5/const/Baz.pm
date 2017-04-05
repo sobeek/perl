@@ -1,11 +1,11 @@
 package Baz;
-
+#use diagnostics;
 use strict;
 use warnings;
 
-use Foo qw/:math/;
+use Foo qw/:all/;
 
-warn "E: ". Foo::E;     # ''
-warn "PI: ". PI;
+warn "E: ". E;
+warn "PI: ". Foo::PI();
 
 1;
