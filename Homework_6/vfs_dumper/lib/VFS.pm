@@ -4,7 +4,8 @@ use strict;
 use warnings;
 use 5.010;
 use JSON;
-use Encode qw/encode decode/;
+use Encode qw/decode/;
+use Switch;
 
 my $bin_string;
 
@@ -30,14 +31,14 @@ sub parse {
 sub parser {
     my ($type) = @_;
     my $unpacking_fields;
-    given ($type) {
-        when ('file') {
+    switch ($type) {
+        case ('file') {
             $unpacking_fields = $unpacking_fields_file;
         }
-        when ('directory') {
+        case ('directory') {
             $unpacking_fields = $unpacking_fields_dir;
         }
-        default {
+        else {
             die "UNKNOWN TYPE";
         }
     }
@@ -111,29 +112,31 @@ sub vfs_dumper {
             }
             $wait_first = 0;
         }
-        given ($command) {
-            when ('D') {
+        switch ($command) {
+            case ('D') {
                 my $res;
                 $res = parse_dir();
                 $res->{list} = vfs_dumper();
                 push @$current_dir, $res;
             }
-            when ('F') {
+            case ('F') {
                 push @$current_dir, parse_file();
             }
-            when ('I') {
-                next
+            case (['I', 'Z']) {
+                #next
             }
-            when ('Z') {
-                last
-            }
-            when ('U') {
+            #case ('Z') {
+                #return;
+                #last
+            #}
+            case ('U') {
                 return $current_dir;
             }
-            default {
+            else {
                 die "WHAT??";
             }
         }
+        last if 'Z' eq $command;
     }
     die "Garbage ae the end of the buffer" if $bin_string;
     return shift @$current_dir // {};
