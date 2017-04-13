@@ -3,6 +3,9 @@
 use strict;
 use warnings;
 use Test::More tests => 5;
+BEGIN {
+    push @INC, '../lib'
+}
 use_ok("Local::MatrixMultiplier");
 
 my $matrix_a = [

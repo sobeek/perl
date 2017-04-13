@@ -8,7 +8,7 @@ BEGIN{
 		use warnings::register;
 	}
 }
-no warnings 'experimental';
+#no warnings 'experimental';
 our $VERSION = 1.0;
 
 use Test::More tests => 4;

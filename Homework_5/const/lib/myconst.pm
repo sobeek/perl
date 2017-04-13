@@ -46,7 +46,7 @@ sub import {
 }
 
 sub check_args {
-    my ($key, $value) = @_; # just key and value
+    my ($key, $value) = @_; # just key and value from %args
     if (ref $value || looks_like_number($key) || $key !~ /^\w+$/) {
         return 0
     }

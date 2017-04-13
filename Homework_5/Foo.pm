@@ -8,7 +8,7 @@ use warnings;
 #use Exporter qw/import/;
 
 BEGIN {
-    push @INC, "./lib";
+    push @INC, "./const/lib";
     #print "@INC";
 }
 
