@@ -1,0 +1,165 @@
+Find urls in https://assets-cdn.github.com/assets/frameworks-181ab2bfd39f84244ec09224501ce17957dee40c02a8c0d3e503b9dfb63c2f8e.css
+URI: https://assets-cdn.github.com/assets/frameworks-181ab2bfd39f84244ec09224501ce17957dee40c02a8c0d3e503b9dfb63c2f8e.css
+Not our url
+Find urls in https://assets-cdn.github.com/assets/github-cdb7df0f0a8e98949853d3899e799d25af97ee5db337b8f54d27485ac46bd6a3.css
+URI: https://assets-cdn.github.com/assets/github-cdb7df0f0a8e98949853d3899e799d25af97ee5db337b8f54d27485ac46bd6a3.css
+Not our url
+Find urls in https://assets-cdn.github.com/assets/site-d826c765b656f31c7d808168e332aa14ccb724820f292ecd2dfb74b156e2ebde.css
+URI: https://assets-cdn.github.com/assets/site-d826c765b656f31c7d808168e332aa14ccb724820f292ecd2dfb74b156e2ebde.css
+Not our url
+Find urls in https://github.com/fluidicon.png
+URI: https://github.com/fluidicon.png
+Not our url
+Find urls in https://avatars1.githubusercontent.com/u/237986?v=3&amp;s=400
+URI: https://avatars1.githubusercontent.com/u/237986?v=3&amp;s=400
+Not our url
+Find urls in https://github.com/Nikolo/Technosfera-perl
+URI: https://github.com/Nikolo/Technosfera-perl
+Not our url
+Find urls in https://assets-cdn.github.com/
+URI: https://assets-cdn.github.com/
+Not our url
+Find urls in https://collector.githubapp.com/github-external/browser_event
+URI: https://collector.githubapp.com/github-external/browser_event
+Not our url
+Find urls in https://github.com/Nikolo/Technosfera-perl.git
+URI: https://github.com/Nikolo/Technosfera-perl.git
+Not our url
+Find urls in https://github.com/Nikolo/Technosfera-perl/commits/anosov-crawler.atom
+URI: https://github.com/Nikolo/Technosfera-perl/commits/anosov-crawler.atom
+Not our url
+Find urls in https://github.com/Nikolo/Technosfera-perl/tree/anosov-crawler
+URI: https://github.com/Nikolo/Technosfera-perl/tree/anosov-crawler
+Not our url
+Find urls in https://api.github.com/_private/browser/stats
+URI: https://api.github.com/_private/browser/stats
+Not our url
+Find urls in https://api.github.com/_private/browser/errors
+URI: https://api.github.com/_private/browser/errors
+Not our url
+Find urls in https://assets-cdn.github.com/pinned-octocat.svg
+URI: https://assets-cdn.github.com/pinned-octocat.svg
+Not our url
+Find urls in https://assets-cdn.github.com/favicon.ico
+URI: https://assets-cdn.github.com/favicon.ico
+Not our url
+Find urls in https://github.com/
+URI: https://github.com/
+Not our url
+Find urls in http://schema.org/SoftwareSourceCode
+URI: http://schema.org/SoftwareSourceCode
+Not our url
+Find urls in http://schema.org/BreadcrumbList
+URI: http://schema.org/BreadcrumbList
+Not our url
+Find urls in http://schema.org/ListItem
+URI: http://schema.org/ListItem
+Not our url
+Find urls in http://schema.org/ListItem
+URI: http://schema.org/ListItem
+Not our url
+Find urls in http://schema.org/ListItem
+URI: http://schema.org/ListItem
+Not our url
+Find urls in https://github.com/Nikolo/Technosfera-perl/blob/master/LICENSE
+URI: https://github.com/Nikolo/Technosfera-perl/blob/master/LICENSE
+Not our url
+Find urls in https://help.github.com/articles/which-remote-url-should-i-use
+URI: https://help.github.com/articles/which-remote-url-should-i-use
+Not our url
+Find urls in https://github.com/Nikolo/Technosfera-perl.git
+URI: https://github.com/Nikolo/Technosfera-perl.git
+Not our url
+Find urls in https://github.com/Nikolo/Technosfera-perl.git
+URI: https://github.com/Nikolo/Technosfera-perl.git
+Not our url
+Find urls in https://avatars0.githubusercontent.com/u/8656795?v=3&amp;s=40
+URI: https://avatars0.githubusercontent.com/u/8656795?v=3&amp;s=40
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+URI: https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif
+Not our url
+Find urls in https://www.youtube.com/playlist?list=PLrCZzMib1e9pJchUR-KGNJvz2BA6XjIPr
+URI: https://www.youtube.com/playlist?list=PLrCZzMib1e9pJchUR-KGNJvz2BA6XjIPr
+Not our url
+Find urls in https://github.com/contact
+URI: https://github.com/contact
+Not our url
+Find urls in https://developer.github.com
+URI: https://developer.github.com
+Not our url
+Find urls in https://training.github.com
+URI: https://training.github.com
+Not our url
+Find urls in https://shop.github.com
+URI: https://shop.github.com
+Not our url
+Find urls in https://github.com/blog
+URI: https://github.com/blog
+Not our url
+Find urls in https://github.com/about
+URI: https://github.com/about
+Not our url
+Find urls in https://github.com
+URI: https://github.com
+Not our url
+Find urls in https://github.com/site/terms
+URI: https://github.com/site/terms
+Not our url
+Find urls in https://github.com/site/privacy
+URI: https://github.com/site/privacy
+Not our url
+Find urls in https://github.com/security
+URI: https://github.com/security
+Not our url
+Find urls in https://status.github.com/
+URI: https://status.github.com/
+Not our url
+Find urls in https://help.github.com
+URI: https://help.github.com
+Not our url
+Find urls in https://assets-cdn.github.com/assets/compat-8a4318ffea09a0cdb8214b76cf2926b9f6a0ced318a317bed419db19214c690d.js
+URI: https://assets-cdn.github.com/assets/compat-8a4318ffea09a0cdb8214b76cf2926b9f6a0ced318a317bed419db19214c690d.js
+Not our url
+Find urls in https://assets-cdn.github.com/assets/frameworks-6d109e75ad8471ba415082726c00c35fb929ceab975082492835f11eca8c07d9.js
+URI: https://assets-cdn.github.com/assets/frameworks-6d109e75ad8471ba415082726c00c35fb929ceab975082492835f11eca8c07d9.js
+Not our url
+Find urls in https://assets-cdn.github.com/assets/github-e71f20d3e7df2f6a170e77ae4db10f0f240c37f9c6149e9c408241b35c28fd52.js
+URI: https://assets-cdn.github.com/assets/github-e71f20d3e7df2f6a170e77ae4db10f0f240c37f9c6149e9c408241b35c28fd52.js
+Not our url

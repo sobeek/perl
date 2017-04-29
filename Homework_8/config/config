@@ -1,0 +1,5 @@
+[SQLite]
+type=SQLite
+name=../perl.db
+user=""
+password=""
