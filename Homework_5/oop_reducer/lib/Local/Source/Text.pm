@@ -1,9 +1,10 @@
-#! usr/bin/perl
+package Local::Source::Text;
+
 use strict;
 use warnings;
-use Local::Source;
 
-package Local::Source::Text;
+use parent 'Local::Source';
+
 #our @ISA = ("Local::Source");
 #our $i = 0;
 
@@ -23,7 +24,7 @@ sub next {
     #print $delimiter;
     my $splitted = text_to_array ($text, $delimiter);
     my $i = $obj->{counter};
-    my $result = Local::Source::get_next ($splitted, $i);
+    my $result = $obj->get_next($splitted, $i);
     if (defined $result) {
         $obj->{counter}++;
         return $result
