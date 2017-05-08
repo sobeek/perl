@@ -1,13 +1,12 @@
-#! usr/bin/perl
+package Local::Source;
+
 use strict;
 use warnings;
-
-package Local::Source;
 
 #our $i = 0;
 
 sub get_next {
-    my ($array, $i) = @_;
+    my ($self, $array, $i) = @_;
     my $len_array = @$array;
     if ($i < $len_array) {
         return $array->[$i];

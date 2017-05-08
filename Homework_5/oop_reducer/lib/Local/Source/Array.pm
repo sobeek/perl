@@ -4,6 +4,11 @@ package Local::Source::Array;
 
 use strict;
 use warnings;
+
+use parent 'Local::Source';
+
+use strict;
+use warnings;
 use parent 'Local::Source';
 
 sub new {
@@ -20,6 +25,8 @@ sub next {
     my $i = $obj->{counter};
     my $result = get_next ($arr, $i);
     #my $result = Local::Source::get_next ($arr, $i);
+    #my $result = Local::Source::get_next ($arr, $i++);
+    my $result = $obj->get_next($arr, $i);
     if (defined $result) {
         $obj->{counter}++;
         return $result
