@@ -1,9 +1,10 @@
 #! usr/bin/perl
-use strict;
-use warnings;
-use Local::Source;
 
 package Local::Source::Array;
+
+use strict;
+use warnings;
+use parent 'Local::Source';
 
 sub new {
     my $invocant = shift;
@@ -17,8 +18,8 @@ sub next {
     my $obj = shift;
     my $arr = $obj->{array};
     my $i = $obj->{counter};
-    #my $result = Local::Source::get_next ($arr, $i++);
-    my $result = Local::Source::get_next ($arr, $i);
+    my $result = get_next ($arr, $i);
+    #my $result = Local::Source::get_next ($arr, $i);
     if (defined $result) {
         $obj->{counter}++;
         return $result

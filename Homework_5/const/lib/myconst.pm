@@ -47,10 +47,11 @@ sub import {
 
 sub check_args {
     my ($key, $value) = @_; # just key and value from %args
-    if (ref $value || looks_like_number($key) || $key !~ /^\w+$/) {
-        return 0
-    }
-    return 1;
+    #if (ref $value || looks_like_number($key) || $key !~ /^\w+$/) {
+    #    return 0
+    #}
+    #return 1;
+    return !(ref $value || looks_like_number($key) || $key !~ /^\w+$/)
 }
 
 sub fill_names_table {

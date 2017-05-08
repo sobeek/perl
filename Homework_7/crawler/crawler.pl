@@ -54,7 +54,6 @@ $next->() for 1..3;
 =cut
 my $cv = AE::cv;
 #my $url = 'https://github.com/Nikolo/Technosfera-perl/tree/anosov-crawler';
-#my $url = 'https://github.com/Nikolo/Technosfera-perl/tree/anosov-crawler/viewer';
 my $url = 'https://github.com/Nikolo/Technosfera-perl/tree/anosov-crawler/projects';
 my @urls_to_vizit = ($url);
 my $base = URI->new($url);
@@ -82,7 +81,7 @@ my $finder = URI::Find->new(sub {
 
 my $f;
 $f = sub {
-    my ($j, $elem) = @_;
+    my $elem = pop;
     #print $i, $elem->attr('href');
     my $uri = URI->new_abs($elem->attr('href'), $base);
     #my $found_url = ;
@@ -150,11 +149,12 @@ sub min {
 
 $cv->begin;
 my $i = 0;
+my $break = 5;
 
 $run = sub {
     print "-------------------\nINCREMENTING I";
     my $cur = $i++;
-    if ($cur > $#urls_to_vizit || $i > 1000) {
+    if ($cur > $#urls_to_vizit || $i > $break) {
         #--$i;
         return
     }
