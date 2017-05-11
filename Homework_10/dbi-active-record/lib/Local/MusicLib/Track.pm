@@ -26,8 +26,12 @@ has_field extension => (
 );
 
 has_field duration => (
-    isa => 'Int',
-    serializer => sub {$_[0]}, # we got number of seconds
+    isa => 'Str',
+    #serializer => sub {$_[0]}, # we got number of seconds
+    serializer => sub {
+        my ($h, $m, $s) = split(/:/, $_[0]);
+        return $h*3600 + $m*60 + $s
+    },
     deserializer => sub {sprintf "%02d:%02d:%02d", (gmtime($_[0]))[2,1,0]}
 );
 

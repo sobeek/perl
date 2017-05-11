@@ -24,6 +24,7 @@ void new(code)
         sv_setsv(sv, code);
         /* callback = code; there should be the end of new */
         printf ("2\n");
+        /*
         ENTER;
         SAVETMPS;
 
@@ -37,6 +38,7 @@ void new(code)
 
         FREETMPS;
         LEAVE;
+        */
 
 HV* add(name, value)
         char* name;

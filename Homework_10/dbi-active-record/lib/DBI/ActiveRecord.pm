@@ -13,7 +13,7 @@ C<DBI::ActiveRecord> - основной класс, через который п
 
 =head1 DESCRIPTION
 
-При подключении модуля C<DBI::ActiveRecord>, подключающий пакет, автоматически становится наследником класса C<DBI::ActiveRecord::Object>, а так же подключает к вашему классу трейт C<DBI::ActiveRecord::Trait::Class>.
+При подключении модуля C<DBI::ActiveRecord> подключающий пакет автоматически становится наследником класса C<DBI::ActiveRecord::Object>, а также подключает к вашему классу трейт C<DBI::ActiveRecord::Trait::Class>.
 
 Класс предоставляет три sugar-функции, для описания модели данных:
 

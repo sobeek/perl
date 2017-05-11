@@ -37,6 +37,7 @@ C<DBI::ActiveRecord::Object> - базовый класс для всех объ�
 
 sub select {
     my ($class, $field, $keys, $limit) = @_;
+    #print @_;
     return $class->meta->db_class->instance->select($class, $field, $keys, $limit);
 }
 
@@ -48,7 +49,8 @@ sub select {
 
 sub insert {
     my ($self) = @_;
-    #print 1;
+    #print "===============\n===n";
+    #print $self;
     return $self->meta->db_class->instance->insert($self);
 }
 

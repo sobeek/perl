@@ -126,7 +126,7 @@ sub select {
 
 sub insert {
     my ($self, $obj) = @_;
-
+    #print "===============\n=================";
     my $fields = $obj->meta->fields;
     my @ok_fields = grep { not $obj->meta->get_attribute($_)->auto_increment } @$fields;
     my @bind = ();
@@ -159,8 +159,24 @@ sub insert {
 
 sub update {
     my ($self, $obj) = @_;
-    print "You tried to update!";
-    return 1
+    #print "You tried to update!";
+    my $key_field = $obj->meta->primary_key;
+    my $key_value;
+    my $fields = [];
+    my $values = [];
+    for (@{ $obj->meta->fields }) {
+        my $field_attr = $obj->meta->get_attribute($_);
+        my $field_value = $obj->$_;
+        $field_value = $field_attr->serializer->($field_value) if $field_attr->serializer;
+        if ($_ eq $key_field) {
+            $key_value = $field_value;
+        }
+        else {
+            push @$fields, $_;
+            push @$values, $field_value;
+        }
+    }
+    return $self->_update($obj->meta->table_name, $key_field, $key_value, $fields, $values)
 }
 
 =head2 delete($obj)
