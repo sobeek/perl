@@ -191,7 +191,8 @@ PERL_ARCHIVEDEP    =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/Stats.pm
+TO_INST_PM = 1.pl \
+	lib/Stats.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -211,8 +212,8 @@ XSUBPPDIR = /Users/pavel/perl5/perlbrew/perls/perl-5.16.0/lib/site_perl/5.16.0/E
 XSUBPP = "$(XSUBPPDIR)$(DFSEP)xsubpp"
 XSUBPPRUN = $(PERLRUN) $(XSUBPP)
 XSPROTOARG = 
-XSUBPPDEPS = /Users/pavel/perl5/perlbrew/perls/perl-5.16.0/lib/5.16.0/ExtUtils/typemap /Users/pavel/perl5/perlbrew/perls/perl-5.16.0/lib/site_perl/5.16.0/ExtUtils$(DFSEP)xsubpp
-XSUBPPARGS = -typemap '/Users/pavel/perl5/perlbrew/perls/perl-5.16.0/lib/5.16.0/ExtUtils/typemap'
+XSUBPPDEPS = /Users/pavel/perl5/perlbrew/perls/perl-5.16.0/lib/5.16.0/ExtUtils/typemap typemap /Users/pavel/perl5/perlbrew/perls/perl-5.16.0/lib/site_perl/5.16.0/ExtUtils$(DFSEP)xsubpp
+XSUBPPARGS = -typemap '/Users/pavel/perl5/perlbrew/perls/perl-5.16.0/lib/5.16.0/ExtUtils/typemap' -typemap '/Users/pavel/perl/Homework_11/Stats/Stats/typemap'
 XSUBPP_EXTRA_ARGS =
 
 
@@ -1038,6 +1039,7 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	  '1.pl' '$(INST_LIB)/1.pl' \
 	  'lib/Stats.pm' 'blib/lib/Stats.pm' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
