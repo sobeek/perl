@@ -8,18 +8,26 @@ use DDP;
 
 #settings: avg => 1, sum => 5, max => 2
 
-my @list = ("max", "cnt", "sum", "min", "avg");
+my @list = ("avg", "cnt", "sum", "min", "max");
 sub x {
-    print 199;
-    p @list;
+    #print 199;
+    print @list;
     return @list;
     #return @$list
 };
 my $x = \&x;
-my $metric = Stats::new($x);
+my $metric_1 = Stats::new($x);
 #p $metric;
 
-p Stats::add($metric, "abc", 90);
-p Stats::add($metric, "abc", 100);
-#p $h1;
-#p Stats::add("bbc", {avg => 10, cnt => 20, sum => 40});
+#print "we've got";
+p Stats::add($metric_1, "abc", 90);
+
+@list = ();
+#my $metric_2 = Stats::new($x);
+Stats::add($metric_1, "def", 100);
+Stats::add($metric_1, "def", 200);
+Stats::add($metric_1, "abc", 100);
+
+p Stats::stat($metric_1);
+
+#p Stats::add($metric_2, "def", 22);

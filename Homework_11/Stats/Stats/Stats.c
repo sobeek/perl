@@ -16,12 +16,20 @@
 typedef struct {
     SV* code;
     HV* metrics;
+    //AV* settings;
 } METRIC;
 
-SV * callback = (SV*)NULL;
-HV* metrics = (HV*)NULL;
+typedef struct {
+    AV* metrics;
+} METRIC_ARRAY;
 
-#line 25 "Stats.c"
+//METRIC_ARRAY * created_metrics = malloc( sizeof(METRIC_ARRAY) );
+//created_metrics->metrics = newAV();
+
+//METRIC * metrics[1];
+bool flag = FALSE;
+
+#line 33 "Stats.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -165,7 +173,7 @@ S_croak_xs_usage(const CV *const cv, const char *const params)
 #  define newXS_deffile(a,b) Perl_newXS_deffile(aTHX_ a,b)
 #endif
 
-#line 169 "Stats.c"
+#line 177 "Stats.c"
 
 XS_EUPXS(XS_Stats_new); /* prototype to pass -Wmissing-prototypes */
 XS_EUPXS(XS_Stats_new)
@@ -178,13 +186,14 @@ XS_EUPXS(XS_Stats_new)
     {
 	SV*	code = ST(0)
 ;
-#line 20 "Stats.xs"
+#line 28 "Stats.xs"
         int count;
         printf ("1\n");
 
         METRIC * self = malloc( sizeof(METRIC) );
         self->code = code;
         self->metrics = newHV();
+        //self->settings = newAV();
         //hv_store(self->metrics, "anc", 3, newSViv(7), 0);
         // Convert pointer to size_t
         size_t point_iv = PTR2IV(self);
@@ -195,11 +204,12 @@ XS_EUPXS(XS_Stats_new)
         // Create Object
         SV* obj = sv_bless(svrv, gv_stashpv(SvPV_nolen(ST(0)), 1));
         printf ("2\n");
-/* THE GREATEST CODE EVER */
+/* GETTING THE STRUCTURE FIELDS
         METRIC* x;
-        SV * point = SvRV(obj);
-        size_t z = SvIV (point);
+        SV * sv_obj = SvRV(obj);
+        size_t z = SvIV (sv_obj);
         x = INT2PTR(METRIC*, z);
+ */
         XPUSHs(sv_2mortal(obj)); // x - это наша структура
 /*------------------------*/
         //RETVAL = obj;
@@ -217,10 +227,118 @@ XS_EUPXS(XS_Stats_new)
         FREETMPS;
         LEAVE;
 */
-#line 221 "Stats.c"
+#line 231 "Stats.c"
 	PUTBACK;
 	return;
     }
+}
+
+
+XS_EUPXS(XS_Stats_calculate_avg); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Stats_calculate_avg)
+{
+    dVAR; dXSARGS;
+    if (items != 1)
+       croak_xs_usage(cv,  "current_metric_values");
+    {
+	HV*	current_metric_values;
+
+	STMT_START {
+		SV* const xsub_tmp_sv = ST(0);
+		SvGETMAGIC(xsub_tmp_sv);
+		if (SvROK(xsub_tmp_sv) && SvTYPE(SvRV(xsub_tmp_sv)) == SVt_PVHV){
+		    current_metric_values = (HV*)SvRV(xsub_tmp_sv);
+		}
+		else{
+		    Perl_croak(aTHX_ "%s: %s is not a HASH reference",
+				"Stats::calculate_avg",
+				"current_metric_values");
+		}
+	} STMT_END
+;
+#line 72 "Stats.xs"
+        char *sum = "sum";
+        char *cnt = "cnt";
+        int _sum;
+        int _count;
+        //printf ("1\n");
+        SV* ptr_to_sum_value = *(hv_fetch(current_metric_values, sum, strlen(sum), 0));
+        SV* ptr_to_cnt_value = *(hv_fetch(current_metric_values, cnt, strlen(cnt), 0));
+        //printf ("2\n");
+
+        //size_t size_sum_value =
+        _sum = SvIV (ptr_to_sum_value);
+
+        //printf ("%d\n", _sum);
+        //size_t size_count_value =
+        _count = SvIV (ptr_to_cnt_value);
+        //printf ("%d\n", _count);
+        //_sum = INT2PTR (int, size_sum_value);
+        double _avg = _sum / _count;
+        SV* avg = newSVnv(_avg);
+        hv_store(current_metric_values, "avg", 3, avg, 0);
+#line 281 "Stats.c"
+    }
+    XSRETURN_EMPTY;
+}
+
+
+XS_EUPXS(XS_Stats_stat); /* prototype to pass -Wmissing-prototypes */
+XS_EUPXS(XS_Stats_stat)
+{
+    dVAR; dXSARGS;
+    if (items != 1)
+       croak_xs_usage(cv,  "self");
+    {
+	SV*	self = ST(0)
+;
+	HV *	RETVAL;
+#line 96 "Stats.xs"
+        METRIC* calculated_metrics;
+        SV * calculated_metrics_sv = SvRV(self);
+        size_t size_calculated_metrics = SvIV (calculated_metrics_sv);
+        calculated_metrics = INT2PTR(METRIC*, size_calculated_metrics);
+
+        RETVAL = calculated_metrics->metrics;
+        char * key;
+        char * _settings = "_settings";
+
+        I32 hash_keys_number = hv_iterinit(calculated_metrics->metrics);
+        for (int i = 1; i < hash_keys_number; i++) {
+            HE* x = hv_iternext(calculated_metrics->metrics);
+            key = hv_iterkey(x, &hash_keys_number);
+            printf("KEY: %s\n", key);
+
+            SV* ptr_to_current_metric_values = *hv_fetch(calculated_metrics->metrics, key, strlen(key), 0);
+            size_t size_current_metric_values = SvIV (ptr_to_current_metric_values);
+            HV* current_metric_values = INT2PTR (HV*, size_current_metric_values);
+
+            SV* sv_settings = *hv_fetch(current_metric_values, _settings, strlen(_settings), 0);
+            size_t size_settings = SvIV(sv_settings);
+            AV* settings = INT2PTR(AV*, size_settings);
+            //
+            if (-1 == av_len(settings)) {
+                printf("NULL\n");
+                //hv_undef(current_metric_values);
+                hv_delete(calculated_metrics->metrics, key, strlen(key), 0);
+                continue;
+            }
+            else {
+                printf("NOT NULL\n");
+            }
+            //hv_fetch(x->metrics, name, strlen(name), 0);
+        }
+        RETVAL = calculated_metrics->metrics;
+
+#line 334 "Stats.c"
+	{
+	    SV * RETVALSV;
+	    RETVALSV = newRV((SV*)RETVAL);
+	    RETVALSV = sv_2mortal(RETVALSV);
+	    ST(0) = RETVALSV;
+	}
+    }
+    XSRETURN(1);
 }
 
 
@@ -229,27 +347,26 @@ XS_EUPXS(XS_Stats_add)
 {
     dVAR; dXSARGS;
     if (items != 3)
-       croak_xs_usage(cv,  "self, name, value");
+       croak_xs_usage(cv,  "self, name, sv_value");
     {
 	SV*	self = ST(0)
 ;
 	char*	name = (char *)SvPV_nolen(ST(1))
 ;
-	SV*	value = ST(2)
+	SV*	sv_value = ST(2)
 ;
 	HV *	RETVAL;
-#line 65 "Stats.xs"
+#line 140 "Stats.xs"
         int count;
+        char * settings_item;
         printf ("name: %s\n", name);
-        //HV* local_metrics = (HV *) sv_2mortal ((SV *) newHV ());
-        //printf ("name: %s\n", name);
         METRIC* x;
         SV * ptr_to_self = SvRV(self);
         size_t z = SvIV (ptr_to_self);
         x = INT2PTR(METRIC*, z);
-        //RETVAL = x->metrics;
+        //RETVAL = x->settings;
 
-        AV* settings = newAV();
+        //AV* settings = newAV();
 
         bool avg_flag = FALSE;
 /*
@@ -261,13 +378,6 @@ XS_EUPXS(XS_Stats_add)
 
         PUTBACK;
 */
-        count = call_sv(x->code, G_ARRAY);
-        SPAGAIN;
-
-        for (int j = 0; j < count; j++) {
-            av_push(settings, POPs);
-        }
-
 
         /*for (int j = 0; j < count; j++) {
             STRLEN len;
@@ -276,151 +386,212 @@ XS_EUPXS(XS_Stats_add)
             printf("%s\n", s);
         }*/
 
-        /*PUTBACK;
-        FREETMPS;
-        LEAVE; */
-
         if (hv_exists(x->metrics, name, strlen(name))) {
-            printf("RENEW\n");
+            printf("UPDATE\n");
 
             SV* ptr_to_current_metric_values = *hv_fetch(x->metrics, name, strlen(name), 0);
             size_t size_current_metric_values = SvIV (ptr_to_current_metric_values);
             HV* current_metric_values = INT2PTR (HV*, size_current_metric_values);
 
-            RETVAL = current_metric_values;
+            RETVAL = x->metrics;
+
             //HV* current_metric_values = *hv_fetch(x->metrics, name, strlen(name), 0);
             //SV* ptr_to_current_metric_values = *(hv_fetch(current_metric, sum, strlen(sum), 0));
             //size_t size_sum_value = SvIV (ptr_to_current_metric_values);
             //HV* current_metric = INT2PTR (HV*, size_sum_value);
 
-            size_t size_t_of_current_value = SvIV (value);
-            int value = INT2PTR (int, size_t_of_current_value);
-
+            int value = SvIV (sv_value);
+            //count = (int) av_len(x->settings) + 1;
+            printf ("upd: %d\n", count);
             printf("value = %d\n", value);
 
-            for (int i = 0; i < count; i++) {
-                STRLEN len;
-                SV *sv = av_shift(settings);
-                char *s = SvPV(sv, len);
-                //char *s_const = s;
-                printf ("%d\n", i);
-                printf("%s\n", s);
-                if (!strcmp (s, "sum")) {
-                    printf("%s!\n", s);
+            //for (int i = 0; i < 5; i++) {
+                //STRLEN len;
+                //SV *sv = newSVsv(*(av_fetch(x->settings, i, 1)));
+                //printf ("upd: %d!!!\n", i);
+                // = av_shift(settings);
+                //char *s = SvPV(sv, len);
+                //printf ("upd: %d\n", i);
+                //printf("upd: %s\n", s);
+                //if (!strcmp (s, "sum")) {
 
-                    SV* ptr_to_sum_value = *(hv_fetch(current_metric_values, s, strlen(s), 0));
-                    size_t size_sum_value = SvIV (ptr_to_sum_value);
-                    int current_sum_value = INT2PTR (int, size_sum_value);
+
+                /*---SUM---*/
+
+                {
+                    //printf("upd: %s!\n", s);
+                    settings_item = "sum";
+                    SV* ptr_to_sum_value = *(hv_fetch(current_metric_values, settings_item, strlen(settings_item), 0));
+                    int current_sum_value = SvIV (ptr_to_sum_value);
 
                     current_sum_value += value;
                     printf ("cur = %d, val = %d\n", current_sum_value, value);
 
                     SV* current_sum = newSViv(current_sum_value);
 
-                    hv_store(current_metric_values, s, strlen(s), current_sum, 0);
+                    hv_store(current_metric_values, settings_item, strlen(settings_item), current_sum, 0);
                 }
-                if (!strcmp (s, "cnt")) {
-                    printf("%s!!\n", s);
 
-                    //char *sum = "cnt";
+                //if (!strcmp (s, "cnt"))
+                /*---CNT---*/
+                {
+                    //printf("upd: %s!!\n", s);
+                    settings_item = "cnt";
+                    SV* ptr_to_cnt_value = *(hv_fetch(current_metric_values, settings_item, strlen(settings_item), 0));
+                    int current_cnt_value = SvIV (ptr_to_cnt_value);
 
-                    SV* ptr_to_cnt_value = *(hv_fetch(current_metric_values, s, strlen(s), 0));
-                    size_t size_cnt_value = SvIV (ptr_to_cnt_value);
-                    int current_cnt_value = INT2PTR (int, size_cnt_value);
-
-                    //size_t size_t_of_current_value = SvIV (value);
-                    //int value = INT2PTR (int, size_t_of_current_value);
-
-                    current_cnt_value++;// += value;
+                    current_cnt_value++;
                     printf ("cur = %d\n", current_cnt_value);
 
                     SV* current_cnt = newSViv(current_cnt_value);
 
-                    hv_store(current_metric_values, s, strlen(s), current_cnt, 0);
-                    //hv_store(current_metric, s, strlen(s), unit, 0);
+                    hv_store(current_metric_values, settings_item, strlen(settings_item), current_cnt, 0);
                 }
-                if (!strcmp (s, "max")) {
-                    printf("%s!!!\n", s);
 
-                    SV* ptr_to_max_value = *(hv_fetch(current_metric_values, s, strlen(s), 0));
-                    size_t size_max_value = SvIV (ptr_to_max_value);
-                    int current_max_value = INT2PTR (int, size_max_value);
-
-                    //size_t size_t_of_current_value = SvIV (value);
-                    //int value = INT2PTR (int, size_t_of_current_value);
+                //if (!strcmp (s, "max"))
+                {
+                    //printf("upd: %s!!!\n", s);
+                    settings_item = "max";
+                    SV* ptr_to_max_value = *(hv_fetch(current_metric_values, settings_item, strlen(settings_item), 0));
+                    int current_max_value = SvIV (ptr_to_max_value);
 
                     current_max_value = current_max_value > value ? current_max_value : value;
 
                     SV* current_max = newSViv(current_max_value);
-                    hv_store(current_metric_values, s, strlen(s), current_max, 0);
-                    //hv_store(current_metric, s, strlen(s), value, 0);
+                    hv_store(current_metric_values, settings_item, strlen(settings_item), current_max, 0);
                 }
-                if (!strcmp (s, "min")) {
-                    printf("%s!!!\n", s);
 
-                    SV* ptr_to_min_value = *(hv_fetch(current_metric_values, s, strlen(s), 0));
-                    size_t size_min_value = SvIV (ptr_to_min_value);
-                    int current_min_value = INT2PTR (int, size_min_value);
+                //if (!strcmp (s, "min"))
+                {
+                    //prin tf("upd: %s!!!\n", s);
+                    settings_item = "min";
+                    SV* ptr_to_min_value = *(hv_fetch(current_metric_values, settings_item, strlen(settings_item), 0));
+                    int current_min_value = SvIV (ptr_to_min_value);
 
-                    //size_t size_t_of_current_value = SvIV (value);
-                    //int value = INT2PTR (int, size_t_of_current_value);
-
-                    printf("__%s!!!\n", s);
+                    //printf("__%s!!!\n", s);
 
                     current_min_value = value > current_min_value ? current_min_value : value;
 
                     printf ("cur = %d, val = %d\n", current_min_value, value);
 
                     SV* current_min = newSViv(current_min_value);
-                    hv_store(current_metric_values, s, strlen(s), current_min, 0);
-                    //hv_store(current_metric, s, strlen(s), value, 0);
-                }
-                if (!strcmp (s, "avg")) {
-                    printf("%s!!\n", s);
-                    avg_flag = TRUE;
+                    hv_store(current_metric_values, settings_item, strlen(settings_item), current_min, 0);
                 }
 
-                //TODO: calculate avg
+                //if (!strcmp (s, "avg")) {
+                //    printf("upd: %s!!\n", s);
+                {
+                    avg_flag = TRUE;
+                }
+            //}
+            //if (avg_flag)
+            /*---CALCULATE AVG---*/
+            {
+                char *sum = "sum";
+                char *cnt = "cnt";
+                int _sum;
+                int _count;
+                //printf ("1\n");
+                SV* ptr_to_sum_value = *(hv_fetch(current_metric_values, sum, strlen(sum), 0));
+                SV* ptr_to_cnt_value = *(hv_fetch(current_metric_values, cnt, strlen(cnt), 0));
+                //printf ("2\n");
+
+                //size_t size_sum_value =
+                _sum = SvIV (ptr_to_sum_value);
+
+                //printf ("%d\n", _sum);
+                //size_t size_count_value =
+                _count = SvIV (ptr_to_cnt_value);
+                //printf ("%d\n", _count);
+                //_sum = INT2PTR (int, size_sum_value);
+                double _avg = _sum / _count;
+                SV* avg = newSVnv(_avg);
+                hv_store(current_metric_values, "avg", 3, avg, 0);
             }
             printf ("OK\n");
             //hv_store(x->metrics, name, strlen(name), newRV_inc((SV*) current_metric_values), 0);
             //x->metrics = current_metric_values;
             //RETVAL = x->metrics;
         }
+
         else {
             printf("INITIALIZE...\n");
             HV* metric_values = newHV();
             SV* unit = newSViv(1);
+/*
+            dSP;
+            ENTER;
+            SAVETMPS;
+            PUSHMARK(SP);
+            PUTBACK;
+*/
+            count = call_sv(x->code, G_ARRAY);
+            SPAGAIN;
+            //PUTBACK;
+            //FREETMPS;
+            //LEAVE;
 
-            printf ("count = %d\n", count);
-            for (int i = 0; i < count; i++) {
+            AV* _settings = newAV();
 
-                STRLEN len;
-                printf ("%d\n", i);
-                SV *sv = av_shift(settings);
-                printf ("%d\n", i);
-                char *s = SvPV(sv, len);
+            for (int j = 0; j < count; j++) {
+                //SV *sv_stack = POPs;
+                //av_push(tmp_settings, sv_stack);
+                av_push(_settings, newSVsv(POPs));
+            }
 
-                printf ("%d\n", i);
-                printf("%s\n", s);
-                if (!strcmp (s, "sum")) {
-                    printf("%s!\n", s);
-                    hv_store(metric_values, s, strlen(s), value, 0);
+            SV* settings_ref = newRV_inc((SV*) _settings);
+            hv_store(metric_values, "_settings", 9, settings_ref, 0);
+            //x->settings = tmp_settings;
+
+            printf ("We have %d items in metric settings\n", count);
+            //for (int i = 0; i < count; i++) {
+
+                //STRLEN len;
+                //printf ("i = %d\n", i);
+                //SV *sv = newSVsv(*(av_fetch(x->settings, i, 1)));
+                //SV *sv = *(av_fetch(x->settings, i, 1));
+                //printf ("i = %d\n", i);
+                //char *s = SvPV(sv, len);
+                //printf ("%d\n", i);
+                //printf("item = %s\n", s);
+                //if (!strcmp (s, "sum")) {
+                //printf("init: %s!\n", s);
+                {
+                    settings_item = "sum";
+                    SV * sum_value = newSVsv(sv_value);
+                    hv_store(metric_values, settings_item, strlen(settings_item), sum_value, 0);
                 }
-                if (!strcmp (s, "cnt")) {
-                    printf("%s!!\n", s);
-                    hv_store(metric_values, s, strlen(s), unit, 0);
+                //}
+                //if (!strcmp (s, "cnt")) {
+                //printf("init: %s!!\n", s);
+                {
+                    settings_item = "cnt";
+                    hv_store(metric_values, settings_item, strlen(settings_item), unit, 0);
                 }
-                if (!strcmp (s, "min") || !strcmp (s, "max")) {
-                    printf("%s!!!\n", s);
-                    hv_store(metric_values, s, strlen(s), value, 0);
+                //}
+                //if (!strcmp (s, "min"))
+                {
+                    //printf("init: %s!!!\n", s);
+                    settings_item = "min";
+                    SV * min_value = newSVsv(sv_value);
+                    hv_store(metric_values, settings_item, strlen(settings_item), min_value, 0);
                 }
-                if (!strcmp (s, "avg")) {
-                    printf("%s!!\n", s);
+                //if (!strcmp (s, "max"))
+                {
+                    //printf("init: %s!!!\n", s);
+                    settings_item = "max";
+                    SV * max_value = newSVsv(sv_value);
+                    hv_store(metric_values, settings_item, strlen(settings_item), max_value, 0);
+                }
+                //if (!strcmp (s, "avg"))
+                {
+                    settings_item = "avg";
+                    //printf("init: %s!!\n", s);
                     avg_flag = TRUE;
                 }
-            }
-            if (avg_flag) {
+            //}
+            //if (avg_flag)
+            {
                 char *sum = "sum";
                 char *cnt = "cnt";
                 int _sum;
@@ -430,12 +601,12 @@ XS_EUPXS(XS_Stats_add)
                 SV* ptr_to_cnt_value = *(hv_fetch(metric_values, cnt, strlen(cnt), 0));
                 //printf ("2\n");
 
-                size_t size_sum_value = SvIV (ptr_to_sum_value);
-                _sum = INT2PTR (int, size_sum_value);
+                //size_t size_sum_value =
+                _sum = SvIV (ptr_to_sum_value);
 
                 //printf ("%d\n", _sum);
-                size_t size_count_value = SvIV (ptr_to_cnt_value);
-                _count = INT2PTR (int, size_count_value);
+                //size_t size_count_value =
+                _count = SvIV (ptr_to_cnt_value);
                 //printf ("%d\n", _count);
                 //_sum = INT2PTR (int, size_sum_value);
                 double _avg = _sum / _count;
@@ -447,7 +618,6 @@ XS_EUPXS(XS_Stats_add)
             //x->metrics = metric_values;
             RETVAL = x->metrics;
         }
-
 
         /*SV* name_len_sv;
         int name_len;
@@ -468,7 +638,7 @@ XS_EUPXS(XS_Stats_add)
         }
         RETVAL = metrics;
         printf ("1\n"); */
-#line 472 "Stats.c"
+#line 642 "Stats.c"
 	{
 	    SV * RETVALSV;
 	    RETVALSV = newRV((SV*)RETVAL);
@@ -508,6 +678,8 @@ XS_EXTERNAL(boot_Stats)
 #endif
 
         newXS_deffile("Stats::new", XS_Stats_new);
+        newXS_deffile("Stats::calculate_avg", XS_Stats_calculate_avg);
+        newXS_deffile("Stats::stat", XS_Stats_stat);
         newXS_deffile("Stats::add", XS_Stats_add);
 #if PERL_VERSION_LE(5, 21, 5)
 #  if PERL_VERSION_GE(5, 9, 0)
