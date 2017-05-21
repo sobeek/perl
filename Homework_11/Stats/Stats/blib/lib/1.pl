@@ -11,23 +11,23 @@ use DDP;
 my @list = ("avg", "cnt", "sum", "min", "max");
 sub x {
     #print 199;
-    print @list;
+    #print @list;
     return @list;
     #return @$list
 };
 my $x = \&x;
-my $metric_1 = Stats::new($x);
+my $metric = Stats::new($x);
 #p $metric;
 
 #print "we've got";
-p Stats::add($metric_1, "abc", 90);
+Stats::add($metric, "abc", 90);
 
-@list = ();
+@list = ("cnt");
 #my $metric_2 = Stats::new($x);
-Stats::add($metric_1, "def", 100);
-Stats::add($metric_1, "def", 200);
-Stats::add($metric_1, "abc", 100);
+Stats::add($metric, "def", 100);
+Stats::add($metric, "def", 200);
+Stats::add($metric, "abc", 100);
 
-p Stats::stat($metric_1);
+p Stats::stat($metric);
 
 #p Stats::add($metric_2, "def", 22);
